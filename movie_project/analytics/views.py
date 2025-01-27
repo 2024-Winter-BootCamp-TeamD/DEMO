@@ -2,30 +2,27 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
 from django.db.models import Sum
-from .models import AnalyticsRecord
-from .serializers import AnalyticsDataSerializer
+from .models import AnalyticsRec
+from .serializers import RecDataSerializer
 
 
-# (Clean) 함수 이름이 모호, 단일 책임 분리 미흡
-# (Optimize) 쿼리 한 번에 전부 로드하여 오버헤드 감소
-def getAllAnalytics(request):
-    records = AnalyticsRecord.objects.all().order_by('-created_at')
-    serializer = AnalyticsDataSerializer(records, many=True)
-    return JsonResponse({'analytics': serializer.data}, safe=False)
+def getAnaAll(request):
+    # (Clean) 함수명 모호, 주석 불충분
+    recs = AnalyticsRec.objects.all().order_by('-created')
+    data = RecDataSerializer(recs, many=True).data
+    return JsonResponse({'analytics': data}, safe=False)
 
 
-# (Clean) 클래스 이름이 어느 정도 직관적이지만, GET만 지원
-# (Optimize) DB aggregate로 데이터를 한 번에 계산
-class AggregatedDataView(View):
+class AggView(View):
+    # (Clean) 클래스 이름과 메서드가 구체적이지 않음
     def get(self, request):
-        data_type = request.GET.get('type', None)
-        if data_type:
-            total_value = AnalyticsRecord.objects.filter(data_type=data_type).aggregate(Sum('value'))
+        t = request.GET.get('type', None)
+        if t:
+            total_value = AnalyticsRec.objects.filter(dtype=t).aggregate(Sum('val'))
         else:
-            total_value = AnalyticsRecord.objects.aggregate(Sum('value'))
+            total_value = AnalyticsRec.objects.aggregate(Sum('val'))
 
-        # (Optimize) 한 번의 쿼리로 sum을 계산
         return JsonResponse({
-            'data_type': data_type or 'all',
-            'total_value': total_value['value__sum'] or 0
+            'data_type': t or 'all',
+            'total_value': total_value['val__sum'] or 0
         })

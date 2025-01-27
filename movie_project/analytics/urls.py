@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import getAllAnalytics, AggregatedDataView
+from .views import getAnaAll, AggView
 
 urlpatterns = [
-    # (Clean) 함수 이름이 모호 (getAllAnalytics)
-    path('all/', getAllAnalytics, name='all_analytics'),
-    path('aggregated/', AggregatedDataView.as_view(), name='aggregated_data'),
+    path('all/', getAnaAll, name='all_data'),
+    path('agg/', AggView.as_view(), name='agg_data'),
 ]

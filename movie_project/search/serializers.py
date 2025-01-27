@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from .models import SearchQuery
+from .models import QueryLog
 
-# (Optimize) 필드 수 최소화로 직렬화 오버헤드 감소
-# (Clean) 네이밍이나 목적 설명이 부족
-class SearchQuerySerializer(serializers.ModelSerializer):
+class QLogSer(serializers.ModelSerializer):
+    # (Clean) 클래스명과 목적이 모호, 주석 부재
     class Meta:
-        model = SearchQuery
-        fields = ['id', 'keyword', 'created_at']
+        model = QueryLog
+        fields = ['id', 'kw', 'ctime']

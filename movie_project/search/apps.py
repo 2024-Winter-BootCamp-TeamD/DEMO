@@ -1,10 +1,11 @@
 from django.apps import AppConfig
 import os
 
-class SearchConfig(AppConfig):
+class searchingStuff(AppConfig):
     name = 'search'
 
-    # (Clean) 앱 설정과 환경변수 로드 로직이 섞여 있어 단일 책임 원칙에 미흡
+    # (Clean) 앱 초기화 + 환경 변수 로드가 뒤섞여, 단일 책임 미흡
     def ready(self):
         super().ready()
-        self.search_mode = os.environ.get("SEARCH_MODE", "basic")
+        self.s_mode = os.environ.get("SEARCH_MODE", "basic")
+        print("Search mode is:", self.s_mode)

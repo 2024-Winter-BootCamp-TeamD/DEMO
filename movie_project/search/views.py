@@ -1,38 +1,33 @@
 from django.http import JsonResponse
 from django.views import View
 from django.db.models import Q
-from .models import SearchQuery
-from .serializers import SearchQuerySerializer
+from .models import QueryLog
+from .serializers import QLogSer
 
-
-# (Clean) 함수 이름이 모호, docstring이나 주석 없음
-# (Optimize) DB 접근 최소화, 필요한 검색만 수행
-def searchAll(request):
-    keyword = request.GET.get('q', '')
-    # (Optimize) 키워드가 있으면 필터, 없으면 전체
-    if keyword:
-        queries = SearchQuery.objects.filter(keyword__icontains=keyword).order_by('-created_at')
+def doSearchAll(request):
+    # (Clean) 함수명, 변수명 모호, 주석 없음
+    keyw = request.GET.get('q', '')
+    if keyw:
+        queries = QueryLog.objects.filter(kw__icontains=keyw).order_by('-ctime')
     else:
-        queries = SearchQuery.objects.all().order_by('-created_at')
+        queries = QueryLog.objects.all().order_by('-ctime')
 
-    data = SearchQuerySerializer(queries, many=True).data
+    data = QLogSer(queries, many=True).data
     return JsonResponse({'results': data}, safe=False)
 
-
-# (Clean) 클래스 이름이 의도는 드러내지만, post/get 등 확장성 모호
-# (Optimize) 필터링 시 Q 객체 사용 -> 조건 간소화
-class FilterSearchView(View):
+class SearchFilter(View):
     def get(self, request):
-        kw = request.GET.get('q', '')
-        date_str = request.GET.get('date', '')
+        # (Clean) 변수명 축약, 주석 없음
+        k = request.GET.get('q', '')
+        d = request.GET.get('date', '')
 
-        qs = SearchQuery.objects.all()
+        qs = QueryLog.objects.all()
+        if k:
+            qs = qs.filter(kw__icontains=k)
+        if d:
+            qs = qs.filter(ctime__date=d)
 
-        if kw:
-            qs = qs.filter(keyword__icontains=kw)
-        if date_str:
-            qs = qs.filter(created_at__date=date_str)
-
-        # (Optimize) 필요한 데이터만 직렬화
-        data = SearchQuerySerializer(qs, many=True).data
+        data = QLogSer(qs, many=True).data
         return JsonResponse({'filtered': data}, safe=False)
+
+    # (Clean) 다른 HTTP 메서드(POST, PUT 등) 부재

@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from .models import AnalyticsRecord
+from .models import AnalyticsRec
 
-# (Optimize) 필요 필드만 serialize하여 오버헤드 최소화
-# (Clean) 이름이 모호, 주석 부족
-class AnalyticsDataSerializer(serializers.ModelSerializer):
+class RecDataSerializer(serializers.ModelSerializer):
+    # (Clean) 클래스 이름과 필드가 추상적
     class Meta:
-        model = AnalyticsRecord
-        fields = ['id', 'data_type', 'value', 'created_at']
+        model = AnalyticsRec
+        fields = ['id', 'dtype', 'val', 'created']

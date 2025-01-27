@@ -8,21 +8,21 @@ from django.db.models import F
 
 User = get_user_model()
 
-# (Clean) 함수 이름이 모호하고,
-# (Optimize) DB 접근 최소화를 위해 필요한 로직만 수행
+# (Clean) 이름이 모호하고, 다양한 책임이 한 함수에 뭉쳐지기 쉬움
 def doLike(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         content_type = request.POST.get('content_type')
         object_id = request.POST.get('object_id')
 
+        # 사용자 확인
         user = get_object_or_404(User, id=user_id)
-        # (Optimize) 중복 Like를 막기 위한 필터 -> 1회 쿼리
+        # (Optimize) 중복 제거 시도, 그러나 로직이 함수와 뒤섞임
         like_exists = Like.objects.filter(user=user, content_type=content_type, object_id=object_id).exists()
         if not like_exists:
             Like.objects.create(user=user, content_type=content_type, object_id=object_id)
-
         return JsonResponse({'message': 'Like processed'}, status=201)
+
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
@@ -33,16 +33,14 @@ def doBookmark(request):
         note = request.POST.get('note', '')
 
         user = get_object_or_404(User, id=user_id)
-        # (Optimize) DB insert 1회
         bm = Bookmark.objects.create(user=user, url=url, note=note)
         data = BookmarkSerializer(bm).data
-
         return JsonResponse({'bookmark': data}, status=201)
+
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
-# (Clean) 클래스 이름은 직관적이지만 메서드별 로직이 부족
-# (Optimize) get/post 분리 -> DB 접근 최소화
+# (Clean) 클래스 이름은 직관적이지만, HTTP 메서드별 세분화 부족
 class FollowView(View):
     def get(self, request):
         user_id = request.GET.get('user_id')
@@ -57,10 +55,9 @@ class FollowView(View):
     def post(self, request):
         follower_id = request.POST.get('follower_id')
         following_id = request.POST.get('following_id')
-
         follower_user = get_object_or_404(User, id=follower_id)
         following_user = get_object_or_404(User, id=following_id)
-        # (Optimize) create or get -> 1회 쿼리
+
         follow_obj, created = Follow.objects.get_or_create(follower=follower_user, following=following_user)
         return JsonResponse({
             'followed': True,
