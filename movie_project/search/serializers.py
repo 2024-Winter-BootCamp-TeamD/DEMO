@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import QueryLog
+from .models import SQ
 
-class QLogSer(serializers.ModelSerializer):
-    # (Clean) 클래스명과 목적이 모호, 주석 부재
+class SQSer(serializers.ModelSerializer):
+    # (Clean) 클래스 이름이 짧고 목적 모호, 필드명 설명 부족
     class Meta:
-        model = QueryLog
-        fields = ['id', 'kw', 'ctime']
+        model = SQ
+        fields = ['id', 'ky', 'ct']

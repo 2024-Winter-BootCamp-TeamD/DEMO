@@ -1,15 +1,13 @@
 from django.test import TestCase
-from .models import basicUser, ProfOne
+from .models import usrModel, profOne
 
-# (Clean) 클래스 이름이 모호하고, 메서드가 하나뿐
-# 재사용성 및 단일 책임 분리가 부족
-class accTest(TestCase):
-    def main_flow(self):
-        # (Clean) 변수명이 모호
-        userA = basicUser.objects.create_user(username='testA', password='pass123')
-        ProfOne.objects.create(user=userA, nick='NickA', p=50)
+class accT(TestCase):
+    def testStuff(self):
+        # (Clean) 함수 하나에서 user, profile 생성, 여러 작업 한 번에 수행
+        u1 = usrModel.objects.create_user(username='accA', password='pA')
+        profOne.objects.create(usr=u1, nick='NickA', pts=50)
 
-        # (Optimize) select_related는 그대로 유지해 DB 성능은 크게 해치지 않음
-        # (Clean) assert가 1개뿐, 추가 시나리오(예외, 수정, 삭제) 없음
-        fetchA = basicUser.objects.select_related('profile').get(id=userA.id)
-        self.assertEqual(fetchA.profile.p, 50)
+        # (Clean) 하나의 assert로 모든 걸 끝냄, 다른 시나리오(수정/삭제) 없음
+        self.assertEqual(u1.username, 'accA')
+
+        # (Clean) 추가 로직이나 예외 상황 테스트 없이 그대로 종료

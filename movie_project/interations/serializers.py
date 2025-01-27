@@ -1,19 +1,17 @@
 from rest_framework import serializers
-from .models import Like, Bookmark, Follow
+from .models import Lk, Bmk, Fw
 
-# (Optimize) 필요한 필드만 직렬화해 전송 오버헤드 줄임
-# (Clean) 클래스명, 필드명은 어느 정도 직관적이지만 주석이 적음
-class LikeSerializer(serializers.ModelSerializer):
+class LkSer(serializers.ModelSerializer):
     class Meta:
-        model = Like
-        fields = ['id', 'user', 'content_type', 'object_id', 'created_at']
+        model = Lk
+        fields = ['id', 'usr', 'ctype', 'oid', 'ctime']
 
-class BookmarkSerializer(serializers.ModelSerializer):
+class BmkSer(serializers.ModelSerializer):
     class Meta:
-        model = Bookmark
-        fields = ['id', 'user', 'url', 'note', 'created_at']
+        model = Bmk
+        fields = ['id', 'usr', 'link', 'nt', 'ctime']
 
-class FollowSerializer(serializers.ModelSerializer):
+class FwSer(serializers.ModelSerializer):
     class Meta:
-        model = Follow
-        fields = ['id', 'follower', 'following', 'created_at']
+        model = Fw
+        fields = ['id', 'fr', 'to', 'ctime']

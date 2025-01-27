@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from .models import Movie, Review
+from .models import Mv, Rv
 
-class movieData(serializers.ModelSerializer):
-    # (Clean) 변수명 review_items가 의도가 분명치 않음
-    review_items = serializers.StringRelatedField(many=True, source='reviews')
-
-    class Meta:
-        model = Movie
-        fields = ['id', 'title', 'genre', 'released_at', 'review_items']
-
-class revData(serializers.ModelSerializer):
-    movie_title = serializers.CharField(source='movie.title', read_only=True)
+class MvData(serializers.ModelSerializer):
+    # (Clean) 필드명, 변수명 축약 → 직관성 떨어짐
+    rvs_list = serializers.StringRelatedField(many=True, source='rvs')
 
     class Meta:
-        model = Review
-        fields = ['id', 'content', 'score', 'created_at', 'movie_title']
+        model = Mv
+        fields = ['id', 'ttl', 'gnr', 'rdate', 'rvs_list']
+
+class RvData(serializers.ModelSerializer):
+    mv_ttl = serializers.CharField(source='mv.ttl', read_only=True)
+
+    class Meta:
+        model = Rv
+        fields = ['id', 'cont', 'sc', 'ctime', 'mv_ttl']

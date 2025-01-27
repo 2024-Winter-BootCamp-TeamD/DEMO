@@ -1,25 +1,27 @@
 from django.db import models
 from django.utils import timezone
 
-class Movie(models.Model):
-    # (Clean) 필드명은 비교적 간단하지만 주석이나 세부 설명 부족
-    title = models.CharField(max_length=100)
-    released_at = models.DateField()
-    genre = models.CharField(max_length=50, db_index=True)
+class Mv(models.Model):
+    # (Clean) 필드명이 축약, 주석 없음
+    ttl = models.CharField(max_length=100)
+    rdate = models.DateField()
+    gnr = models.CharField(max_length=50, db_index=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.ttl}"
 
-class Review(models.Model):
-    movie = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
-    content = models.TextField()
-    score = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField(default=timezone.now)
+class Rv(models.Model):
+    # (Clean) 변수명 간소화
+    mv = models.ForeignKey(Mv, related_name='rvs', on_delete=models.CASCADE)
+    cont = models.TextField()
+    sc = models.PositiveIntegerField(default=0)
+    ctime = models.DateTimeField(default=timezone.now)
 
     class Meta:
+        # (Optimize) 인덱스는 사용하지만, 의미 부연 주석 없음
         indexes = [
-            models.Index(fields=['score', 'created_at']),
+            models.Index(fields=['sc', 'ctime']),
         ]
 
     def __str__(self):
-        return f"{self.movie.title} - {self.score}"
+        return f"{self.mv.ttl} - {self.sc}"

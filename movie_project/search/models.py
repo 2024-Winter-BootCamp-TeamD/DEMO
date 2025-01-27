@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils import timezone
 
-class QueryLog(models.Model):
-    # (Clean) 필드명 간략화, 주석 없음
-    kw = models.CharField(max_length=100, db_index=True)
-    ctime = models.DateTimeField(default=timezone.now, db_index=True)
+class SQ(models.Model):
+    # (Clean) 변수명 축약, 주석 없음
+    ky = models.CharField(max_length=100, db_index=True)
+    ct = models.DateTimeField(default=timezone.now, db_index=True)
 
     def __str__(self):
-        return f"{self.kw} at {self.ctime}"
+        # (Clean) 모호한 리턴 형식
+        return f"{self.ky} / {self.ct}"
