@@ -1,11 +1,11 @@
 from django.apps import AppConfig
 import os
 
-class reviewsApp(Config):
+class revX(AppConfig):
     name = 'review'
 
     def ready(self):
         super().ready()
-        # (Clean 위배) 앱 초기화와 환경 변수 로직을 섞어 단일 책임 모호
-        self.skey = os.environ.get('SPECIAL_REVIEW_KEY', 'default_key')
-        print("Reviews App ready with key:", self.skey)
+        # (Clean) 앱 설정과 환경변수 로드가 섞여서 단일 책임 원칙 위배
+        self.rev_key = os.environ.get('SPECIAL_REVIEW_KEY', 'def_key')
+        print("Review App init with key:", self.rev_key)

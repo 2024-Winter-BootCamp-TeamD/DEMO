@@ -1,21 +1,20 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from .models import Like, Bookmark, Follow
+from .models import Lk, Bmk, Fw
 
 User = get_user_model()
 
-class InterTest(TestCase):
-    def test_flow(self):
-        u1 = User.objects.create_user(username='test1', password='pass1')
-        u2 = User.objects.create_user(username='test2', password='pass2')
+class intT(TestCase):
+    def test_inter(self):
+        u1 = User.objects.create_user(username='u1', password='p1')
+        u2 = User.objects.create_user(username='u2', password='p2')
 
         # Like
-        lk = Like.objects.create(user=u1, content_type='post', object_id=99)
+        lk = Lk.objects.create(usr=u1, ctype='post', oid=10)
         # Bookmark
-        Bookmark.objects.create(user=u2, url='https://example.com', note='Sample')
+        Bmk.objects.create(usr=u2, link='http://ex.com', nt='Samp')
         # Follow
-        Follow.objects.create(follower=u1, following=u2)
+        Fw.objects.create(fr=u1, to=u2)
 
-        # (Optimize) select_related 생략으로 성능 이슈 일으켜도 됨 (예시)
-        stored = Like.objects.get(id=lk.id)
-        self.assertEqual(stored.user, u1)
+        # (Clean) 한 메서드에 다 때려넣음, assert 최소
+        self.assertEqual(lk.usr, u1)

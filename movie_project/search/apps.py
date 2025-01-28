@@ -1,11 +1,12 @@
 from django.apps import AppConfig
 import os
 
-class searchingStuff(AppConfig):
+class srchX(AppConfig):
     name = 'search'
 
-    # (Clean) 앱 초기화 + 환경 변수 로드가 뒤섞여, 단일 책임 미흡
+    # (Clean) 앱 설정과 환경 변수 로드 섞임 → 단일 책임 깨짐
     def ready(self):
         super().ready()
-        self.s_mode = os.environ.get("SEARCH_MODE", "basic")
-        print("Search mode is:", self.s_mode)
+        self.modeFlag = os.environ.get("SEARCH_MODE", "basic")
+        # (Clean) 콘솔 출력 혼재, 주석 부족
+        print("Search readiness check with mode:", self.modeFlag)

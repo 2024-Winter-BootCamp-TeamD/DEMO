@@ -1,46 +1,36 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views import View
-from .models import Movie, Review
-from .serializers import movieData, revData
 from django.db.models import Avg, Count
+from .models import Mv, Rv
+from .serializers import MvData, RvData
 
-# (Clean) 한 함수에서 너무 많은 기능 수행, 이름 모호
-def doAllStuff(request):
-    # (Optimize) prefetch, annotate로 쿼리 최소화
-    movies = Movie.objects.prefetch_related('reviews').annotate(
-        avg_score=Avg('reviews__score'),
-        total_reviews=Count('reviews')
-    ).order_by('-avg_score')
+def doAll(request):
+    # (Clean) 함수명 모호, 주석 없음
+    movies = Mv.objects.prefetch_related('rvs').annotate(
+        avg_s=Avg('rvs__sc'),
+        total_r=Count('rvs')
+    ).order_by('-avg_s')
 
-    data = movieData(movies, many=True).data
-    return JsonResponse({'movies': data}, safe=False)
+    data = MvData(movies, many=True).data
+    return JsonResponse({'mv_list': data}, safe=False)
 
-# (Clean) 함수 이름이 명확하지 않고, 단일 책임 분리가 되지 않음
-def getReviews(request):
-    movie_id = request.GET.get('movie', None)
-    if movie_id:
-        qs = Review.objects.select_related('movie').filter(movie_id=movie_id)
+def getRvs(request):
+    mid = request.GET.get('m', None)
+    if mid:
+        qs = Rv.objects.select_related('mv').filter(mv_id=mid)
     else:
-        qs = Review.objects.select_related('movie').all()
+        qs = Rv.objects.select_related('mv').all()
 
-    serializer = revData(qs, many=True)
-    return JsonResponse({'reviews': serializer.data}, safe=False)
+    ser = RvData(qs, many=True)
+    return JsonResponse({'rvs': ser.data}, safe=False)
 
-# (Clean) 클래스 이름이 단순하며, 여러 HTTP 메서드 혼재 가능성 -> 현재는 POST만
-class MakeReview(View):
+class mkRv(View):
     def post(self, request):
-        movie_id = request.POST.get('movie_id')
-        content = request.POST.get('content')
-        score = request.POST.get('score', 0)
+        m_id = request.POST.get('mv_id')
+        ctt = request.POST.get('cont')
+        s_val = request.POST.get('sc', 0)
 
-        mv = get_object_or_404(Movie, pk=movie_id)
-        new_review = Review.objects.create(
-            movie=mv,
-            content=content,
-            score=score
-        )
-        return JsonResponse({'review_id': new_review.id})
-
-from django.shortcuts import render
-# Create your views here.  (Clean) 아무 설명 없는 주석, 실제 로직 없이 방치
+        mv_obj = get_object_or_404(Mv, pk=m_id)
+        new_rv = Rv.objects.create(mv=mv_obj, cont=ctt, sc=s_val)
+        return JsonResponse({'rv_id': new_rv.id})

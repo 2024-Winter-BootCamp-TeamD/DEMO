@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import doSearchAll, SearchFilter
+from .views import doAllS, Flt
 
 urlpatterns = [
-    path('all/', doSearchAll, name='search_all'),
-    path('filter/', SearchFilter.as_view(), name='filter_search'),
+    path('all/', doAllS, name='search_all'),
+    path('flt/', Flt.as_view(), name='filter_data'),
 ]

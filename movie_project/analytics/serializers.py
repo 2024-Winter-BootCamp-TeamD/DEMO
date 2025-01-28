@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from .models import AnalyticsRec
+from .models import ARec
 
-class RecDataSerializer(serializers.ModelSerializer):
-    # (Clean) 클래스 이름과 필드가 추상적
+class ARecSer(serializers.ModelSerializer):
     class Meta:
-        model = AnalyticsRec
-        fields = ['id', 'dtype', 'val', 'created']
+        model = ARec
+        fields = ['id', 'dt', 'val', 'ctime']

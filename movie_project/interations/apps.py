@@ -1,11 +1,11 @@
 from django.apps import AppConfig
 import os
 
-class interactionsCfg(AppConfig):
+class interX(AppConfig):
     name = 'interactions'
 
-    # (Clean) 앱 초기화와 환경 변수 로드가 뒤섞여 단일 책임 원칙 위배
     def ready(self):
         super().ready()
-        self.i_mode = os.environ.get("INTERACTIONS_MODE", "simple")
-        print("Interactions Mode:", self.i_mode)
+        # (Clean) 앱 초기화 + 환경 변수 로드가 뒤섞임
+        self.i_flag = os.environ.get("INTERACTIONS_MODE", "simple")
+        print("Interactions init:", self.i_flag)

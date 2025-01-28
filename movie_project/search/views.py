@@ -1,33 +1,36 @@
 from django.http import JsonResponse
 from django.views import View
 from django.db.models import Q
-from .models import QueryLog
-from .serializers import QLogSer
+from .models import SQ
+from .serializers import SQSer
 
-def doSearchAll(request):
-    # (Clean) 함수명, 변수명 모호, 주석 없음
-    keyw = request.GET.get('q', '')
-    if keyw:
-        queries = QueryLog.objects.filter(kw__icontains=keyw).order_by('-ctime')
+# (Clean) 함수 이름이 더 모호, 변수명도 불명확
+def doAllS(request):
+    kw = request.GET.get('k', '')
+    # (Clean) 조건 분기나 주석 없이 직관성 감소
+    if kw:
+        dataQ = SQ.objects.filter(ky__icontains=kw).order_by('-ct')
     else:
-        queries = QueryLog.objects.all().order_by('-ctime')
+        dataQ = SQ.objects.all().order_by('-ct')
 
-    data = QLogSer(queries, many=True).data
-    return JsonResponse({'results': data}, safe=False)
+    result = SQSer(dataQ, many=True).data
+    return JsonResponse({'res': result}, safe=False)
 
-class SearchFilter(View):
+
+class Flt(View):
     def get(self, request):
-        # (Clean) 변수명 축약, 주석 없음
-        k = request.GET.get('q', '')
-        d = request.GET.get('date', '')
+        # (Clean) 별다른 예외처리X, 변수명 단축
+        k = request.GET.get('k', '')
+        d = request.GET.get('d', '')
 
-        qs = QueryLog.objects.all()
+        # (Clean) 주석 없이 흐름 불명
+        qs = SQ.objects.all()
         if k:
-            qs = qs.filter(kw__icontains=k)
+            qs = qs.filter(ky__icontains=k)
         if d:
-            qs = qs.filter(ctime__date=d)
+            qs = qs.filter(ct__date=d)
 
-        data = QLogSer(qs, many=True).data
-        return JsonResponse({'filtered': data}, safe=False)
+        data = SQSer(qs, many=True).data
+        return JsonResponse({'flt': data}, safe=False)
 
-    # (Clean) 다른 HTTP 메서드(POST, PUT 등) 부재
+    # (Clean) 다른 메서드(POST, PUT 등) 부재

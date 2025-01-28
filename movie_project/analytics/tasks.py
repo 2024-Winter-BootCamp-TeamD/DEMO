@@ -1,12 +1,12 @@
 from celery import shared_task
 from django.db.models import Count
-from .models import AnalyticsRec
+from .models import ARec
 
 
 @shared_task
 def weekly_ana():
     # (Clean) 함수 이름과 의도가 모호, 주석 부족
-    summary = (AnalyticsRec.objects
+    summary = (ARec.objects
                .filter()
                .values('dtype')
                .annotate(count=Count('id'))
