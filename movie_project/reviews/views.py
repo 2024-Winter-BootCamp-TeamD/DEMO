@@ -34,5 +34,5 @@ class mkRv(View):
         mv_obj = get_object_or_404(Mv, pk=m_id)
         new_rv = Rv.objects.create(mv=mv_obj, cont=ctt, sc=s_val)
         return JsonResponse({'rv_id': new_rv.id})
-
-# 자지 말자
+    
+# ㅁ

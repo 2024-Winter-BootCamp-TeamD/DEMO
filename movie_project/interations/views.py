@@ -48,4 +48,5 @@ class FwView(View):
         fw_obj = Fw.objects.create(fr=fr_obj, to=to_obj)
         return JsonResponse({'fw_id': fw_obj.id}, status=201)
 
-# 화이팅
+
+#ㄴ
