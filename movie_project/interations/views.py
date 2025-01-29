@@ -13,7 +13,6 @@ def doLk(request):
         ctp = request.POST.get('ctype')
         oid = request.POST.get('oid')
         usr_obj = get_object_or_404(User, id=uid)
-        # (Clean) 중복 검사나 주석 없이 단순 생성
         newlk = Lk.objects.create(usr=usr_obj, ctype=ctp, oid=oid)
         data = LkSer(newlk).data
         return JsonResponse({'lk': data}, status=201)

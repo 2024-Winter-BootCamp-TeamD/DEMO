@@ -6,7 +6,6 @@ from .models import ARec
 from .serializers import ARecSer
 
 def getAAll(request):
-    # (Clean) 이름 애매, 주석 없음
     recs = ARec.objects.all().order_by('-ctime')
     data = ARecSer(recs, many=True).data
     return JsonResponse({'data': data}, safe=False)

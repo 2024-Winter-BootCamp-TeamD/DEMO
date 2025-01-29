@@ -8,4 +8,4 @@ class anTest(TestCase):
 
         got = ARec.objects.get(id=r.id)
         self.assertEqual(got.dt, 'typeA')
-        # (Clean) 추가 시나리오 없음
+
