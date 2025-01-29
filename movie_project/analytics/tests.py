@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import ARec
 
+
 class anTest(TestCase):
     def test_basic(self):
         r = ARec.objects.create(dt='typeA', val=10)

@@ -5,6 +5,7 @@ from .models import SQ
 from .serializers import SQSer
 
 
+
 def doAllS(request):
     kw = request.GET.get('k', '')
     if kw:

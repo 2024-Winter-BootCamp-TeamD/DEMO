@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import SQ
 
+
 class sCheck(TestCase):
     def test_stuff(self):
         obj = SQ.objects.create(ky="TestCase")

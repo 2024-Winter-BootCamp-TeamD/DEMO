@@ -3,6 +3,7 @@ from django.db.models import Count
 from .models import ARec
 
 
+
 @shared_task
 def weekly_ana():
     summary = (ARec.objects

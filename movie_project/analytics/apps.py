@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 import os
 
+
 class anltX(AppConfig):
     name = 'analytics'
 

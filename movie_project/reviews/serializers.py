@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Mv, Rv
 
+
 class MvData(serializers.ModelSerializer):
     rvs_list = serializers.StringRelatedField(many=True, source='rvs')
 

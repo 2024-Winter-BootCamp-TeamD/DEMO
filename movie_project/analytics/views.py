@@ -5,6 +5,7 @@ from django.db.models import Sum
 from .models import ARec
 from .serializers import ARecSer
 
+
 def getAAll(request):
     recs = ARec.objects.all().order_by('-ctime')
     data = ARecSer(recs, many=True).data

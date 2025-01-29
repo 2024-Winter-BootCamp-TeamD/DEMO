@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+
 class ARec(models.Model):
     dt = models.CharField(max_length=50, db_index=True)
     val = models.IntegerField(default=0)
