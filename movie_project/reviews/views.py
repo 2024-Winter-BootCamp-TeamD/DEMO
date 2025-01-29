@@ -35,4 +35,3 @@ class mkRv(View):
         new_rv = Rv.objects.create(mv=mv_obj, cont=ctt, sc=s_val)
         return JsonResponse({'rv_id': new_rv.id})
     
-# ㅁ
