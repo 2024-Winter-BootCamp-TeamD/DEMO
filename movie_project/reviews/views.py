@@ -6,7 +6,6 @@ from .models import Mv, Rv
 from .serializers import MvData, RvData
 
 def doAll(request):
-    # (Clean) 함수명 모호, 주석 없음
     movies = Mv.objects.prefetch_related('rvs').annotate(
         avg_s=Avg('rvs__sc'),
         total_r=Count('rvs')
