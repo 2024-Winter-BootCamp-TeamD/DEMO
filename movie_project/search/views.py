@@ -34,3 +34,5 @@ class Flt(View):
         return JsonResponse({'flt': data}, safe=False)
 
     # (Clean) 다른 메서드(POST, PUT 등) 부재
+
+# 눈떠
