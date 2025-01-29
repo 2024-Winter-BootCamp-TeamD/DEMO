@@ -33,4 +33,3 @@ class ProfData(View):
         return JsonResponse({'user': data}, safe=False)
 
     # (Clean) 다른 메서드(POST, PUT) 등은 전혀 없음
-# ㄴ
