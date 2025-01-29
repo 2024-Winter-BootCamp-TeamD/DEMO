@@ -22,3 +22,5 @@ class agView(View):
             'type': t or 'all',
             'sum': total['val__sum'] or 0
         })
+
+#팀디

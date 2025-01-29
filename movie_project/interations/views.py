@@ -47,3 +47,5 @@ class FwView(View):
         to_obj = get_object_or_404(User, id=toid)
         fw_obj = Fw.objects.create(fr=fr_obj, to=to_obj)
         return JsonResponse({'fw_id': fw_obj.id}, status=201)
+
+# 화이팅
