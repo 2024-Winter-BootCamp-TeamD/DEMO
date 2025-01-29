@@ -23,5 +23,4 @@ class agView(View):
             'sum': total['val__sum'] or 0
         })
     
-    
-# ㅁ
+

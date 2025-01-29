@@ -35,4 +35,3 @@ class Flt(View):
 
     # (Clean) 다른 메서드(POST, PUT 등) 부재
 
-#ㄴ
