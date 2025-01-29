@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+
 class Mv(models.Model):
     ttl = models.CharField(max_length=100)
     rdate = models.DateField()

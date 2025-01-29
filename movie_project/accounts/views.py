@@ -5,6 +5,7 @@ from django.views import View
 from .models import usrModel, profOne
 from .serializers import uData, pData
 
+
 def doReg(request):
     if request.method == 'POST':
         un = request.POST.get('username')

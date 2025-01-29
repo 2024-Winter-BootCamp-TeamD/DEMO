@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Lk, Bmk, Fw
 
+
 class LkSer(serializers.ModelSerializer):
     class Meta:
         model = Lk

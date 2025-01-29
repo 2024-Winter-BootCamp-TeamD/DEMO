@@ -5,6 +5,7 @@ from django.db.models import Avg, Count
 from .models import Mv, Rv
 from .serializers import MvData, RvData
 
+
 def doAll(request):
     movies = Mv.objects.prefetch_related('rvs').annotate(
         avg_s=Avg('rvs__sc'),

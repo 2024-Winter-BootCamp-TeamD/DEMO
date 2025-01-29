@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 import os
 
+
 class interX(AppConfig):
     name = 'interactions'
 

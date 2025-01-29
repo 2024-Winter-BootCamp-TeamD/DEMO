@@ -4,6 +4,7 @@ import os
 class accX(AppConfig):
     name = 'accounts'
 
+
     def ready(self):
         super().ready()
         self.acc_flag = os.environ.get("ACCOUNT_MODE", "basic")
