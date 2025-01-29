@@ -8,6 +8,7 @@ class uData(serializers.ModelSerializer):
         model = usrModel
         fields = ['id', 'username', 'bioinfo', 'ctime', 'prof_data']
 
+
 class pData(serializers.ModelSerializer):
     usr_name = serializers.CharField(source='usr.username', read_only=True)
 
