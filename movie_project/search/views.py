@@ -30,4 +30,3 @@ class Flt(View):
         data = SQSer(qs, many=True).data
         return JsonResponse({'flt': data}, safe=False)
 
-
