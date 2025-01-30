@@ -48,4 +48,3 @@ class FwView(View):
         return JsonResponse({'fw_id': fw_obj.id}, status=201)
 
 
-#ㄴ
